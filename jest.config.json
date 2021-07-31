@@ -1,0 +1,18 @@
+{
+  "preset": "ts-jest",
+  "clearMocks": true,
+  "coverageDirectory": "coverage",
+  "testEnvironment": "node",
+  "coveragePathIgnorePatterns": [
+    "<rootDir>/tests/",
+    "<rootDir>/build/",
+    "<rootDir>/node_modules/",
+    "<rootDit>/src/main.ts",
+    "<rootDir>/db/"
+  ],
+  "globals": {
+    "ts-jest": {
+      "diagnostics": false
+    }
+  }
+}
