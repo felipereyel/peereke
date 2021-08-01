@@ -13,4 +13,4 @@ const peerServer = ExpressPeerServer(server, {
   allow_discovery: true,
 });
 
-app.use('/', peerServer);
+app.use('/peer', peerServer);
