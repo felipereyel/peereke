@@ -11,7 +11,7 @@ const server = app.listen(port, () => console.log(`Listening on port ${port}`));
 
 const peerServer = ExpressPeerServer(server, {
   key: process.env.SECRET,
-  allow_discovery: true,
+  allow_discovery: false,
 });
 
 app.use('/peer', peerServer);
