@@ -8,6 +8,16 @@ type UserDTO = {
   password: string;
 };
 
+type PublicUserDTO = {
+  username: string;
+  connection_id: string;
+};
+
+type PublicUserInfo = {
+  username: string;
+  connectionId: string;
+};
+
 export type UserAuth = {
   username: string;
   connectionId: string;
@@ -17,6 +27,13 @@ export default class User {
   username: string;
   password: string;
   connectionId: string;
+
+  static async listUsers(): Promise<PublicUserInfo[]> {
+    const users = (await client.query(
+      'SELECT username, connection_id FROM users',
+    )) as PublicUserDTO[];
+    return users.map((u) => ({ username: u.username, connectionId: u.connection_id }));
+  }
 
   static async create(username: string, password: string): Promise<User> {
     const connectionId = uuidv4();

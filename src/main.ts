@@ -5,7 +5,7 @@ import { ExpressPeerServer } from 'peer';
 import register from './controllers/register';
 import login from './controllers/login';
 import auth from './middleware/auth';
-// import listUsers from './controllers/listUsers';
+import listUsers from './controllers/listUsers';
 
 const app = express();
 const port = process.env.PORT;
@@ -16,12 +16,13 @@ const server = app.listen(port, () => console.log(`Listening on port ${port}`));
 
 const peerServer = ExpressPeerServer(server, {
   key: process.env.SECRET,
-  allow_discovery: false,
+  allow_discovery: true,
 });
-
-app.use('/peer', peerServer);
 
 app.post('/register', register);
 app.post('/login', login);
-app.get('/hello', auth, (req: express.Request, res: express.Response) => res.send('Hello There'));
-// app.get('/users', auth, listUsers);
+
+app.get('/hello', auth, (req, res) => res.send('Hello There'));
+app.get('/users', auth, listUsers);
+
+app.use('/peer', peerServer);

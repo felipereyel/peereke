@@ -1,5 +1,6 @@
+import express from 'express';
 import User from '../model/user';
 
-export default async (req: express.Request, res: express.Response): Promise<void> => {
-  //
+export default async (req: express.Request, res: express.Response) => {
+  return res.send(await User.listUsers());
 };
