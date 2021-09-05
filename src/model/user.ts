@@ -6,6 +6,8 @@ type UserDTO = {
   username: string;
   connection_id: string;
   password: string;
+  created_at: Date;
+  updated_at: Date;
 };
 
 type PublicUserDTO = {
@@ -28,9 +30,9 @@ export default class User {
   password: string;
   connectionId: string;
 
-  static async listUsers(): Promise<PublicUserInfo[]> {
+  static async listActiveUsers(): Promise<PublicUserInfo[]> {
     const users = (await client.query(
-      'SELECT username, connection_id FROM users',
+      "SELECT username, connection_id FROM users where updated_at >= NOW() - INTERVAL '1 HOUR'",
     )) as PublicUserDTO[];
     return users.map((u) => ({ username: u.username, connectionId: u.connection_id }));
   }
@@ -74,7 +76,7 @@ export default class User {
       } as UserAuth,
       process.env.TOKEN_KEY as string,
       {
-        expiresIn: '2h',
+        expiresIn: '1h',
       },
     );
   }
