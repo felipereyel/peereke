@@ -4,12 +4,15 @@ import auth from '../../middleware/auth';
 
 import register from './register';
 import login from './login';
-import listUsers from './listUsers';
+import oneUser from './oneUser';
+import allUsers from './allUsers';
 
 const router = express.Router();
 
 router.put('/', register);
 router.post('/login', login);
-router.get('/', auth, listUsers);
+router.get('/:id', oneUser);
+
+router.get('/', auth, allUsers);
 
 export default router;

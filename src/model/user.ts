@@ -30,11 +30,24 @@ export default class User {
   password: string;
   connectionId: string;
 
-  static async listActiveUsers(): Promise<PublicUserInfo[]> {
+  static async allUsers(): Promise<PublicUserInfo[]> {
     const users = (await client.query(
       "SELECT username, connection_id FROM users where updated_at >= NOW() - INTERVAL '1 HOUR'",
     )) as PublicUserDTO[];
     return users.map((u) => ({ username: u.username, connectionId: u.connection_id }));
+  }
+
+  static async oneUser(username: string): Promise<PublicUserInfo | null> {
+    const [user] = (await client.query(
+      "SELECT username, connection_id FROM users where username = $1 and updated_at >= NOW() - INTERVAL '1 HOUR'",
+      [username],
+    )) as PublicUserDTO[];
+
+    if (!user) return null;
+    return {
+      username: user.username,
+      connectionId: user.connection_id,
+    };
   }
 
   static async create(username: string, password: string): Promise<User> {
