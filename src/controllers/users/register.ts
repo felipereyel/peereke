@@ -1,14 +1,18 @@
 import express from 'express';
-import bcrypt from 'bcryptjs';
 
 import User from '../../model/user';
 
+const isPub = (obj: any) => {
+  if (!(typeof obj === 'object')) return false;
+  return obj.x && obj.y && typeof obj.x === 'string' && typeof obj.y === 'string';
+};
+
 export default async (req: express.Request, res: express.Response): Promise<void> => {
   try {
-    const { username, password } = req.body;
+    const { username, pubkey } = req.body;
 
-    if (!(username && password)) {
-      res.status(400).send('username and password are required');
+    if (!(username && pubkey && isPub(pubkey))) {
+      res.status(400).send('username and pubkey are required');
       return;
     }
 
@@ -19,11 +23,9 @@ export default async (req: express.Request, res: express.Response): Promise<void
       return;
     }
 
-    const encryptedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create(username, encryptedPassword);
-
+    const user = await User.create(username, pubkey);
     res.status(201).json(await user.connectionInfo());
   } catch (err) {
-    console.log(err);
+    res.status(500).send(err.message);
   }
 };

@@ -1,6 +1,6 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import User, { UserAuth } from '../model/user';
+import User, { PublicUserDTO } from '../model/user';
 
 export default async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const token = req.body.token || req.query.token || req.headers['authorization'];
@@ -11,7 +11,7 @@ export default async (req: express.Request, res: express.Response, next: express
 
   try {
     const decoded = jwt.verify(token, process.env.TOKEN_KEY as string);
-    res.locals.user = await User.fromPayload(decoded as UserAuth);
+    res.locals.user = await User.fromPayload(decoded as PublicUserDTO);
   } catch (err) {
     return res.status(401).send('Invalid Token: ' + err.message);
   }

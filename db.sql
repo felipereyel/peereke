@@ -8,8 +8,8 @@ $$ LANGUAGE plpgsql;
 
 CREATE TABLE users (
     username varchar unique,
-    connection_id uuid,
-    password VARCHAR NOT NULL,
+    connectionId uuid,
+    pubkey jsonb NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY (username)
