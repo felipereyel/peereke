@@ -8,7 +8,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE TABLE users (
     username varchar unique,
-    connectionId uuid,
+    connection_id uuid,
     pubkey jsonb NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
