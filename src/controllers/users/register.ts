@@ -24,7 +24,7 @@ export default async (req: express.Request, res: express.Response): Promise<void
     }
 
     const user = await User.create(username, pubkey);
-    res.status(201).json(await user.connectionInfo());
+    res.status(201).json({ token: user.token });
   } catch (err) {
     res.status(500).send(err.message);
   }
