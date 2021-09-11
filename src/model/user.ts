@@ -33,10 +33,10 @@ export default class User {
     return users;
   }
 
-  static async oneUser(username: string): Promise<PublicUserDTO | null> {
+  static async oneUser(connection: string): Promise<PublicUserDTO | null> {
     const [user] = (await client.query(
-      "SELECT username, connection, pubkey FROM users where username = $1 and updated_at >= NOW() - INTERVAL '1 HOUR'",
-      [username],
+      "SELECT username, connection, pubkey FROM users where connection = $1 and updated_at >= NOW() - INTERVAL '1 HOUR'",
+      [connection],
     )) as PublicUserDTO[];
 
     return user ?? null;
